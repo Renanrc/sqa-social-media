@@ -77,18 +77,6 @@ npm run test:api
 
 Os testes Playwright esperam que a API esteja em `http://localhost:8080` e o frontend em `http://localhost:3000`.
 
-## GitHub Actions
-
-O repositório possui dois workflows principais em `.github/workflows/`.
-
-`ci.yml` roda em pushes para `main` e em pull requests. Ele executa:
-
-- testes e build da API;
-- testes do frontend com coverage;
-- análise do SonarQube após os jobs de API e frontend.
-
-`e2e.yml` roda em pushes para `main` e também pode ser acionado manualmente. Ele prepara MySQL, Java, Node.js e Playwright, sobe API e frontend no runner e executa os testes da pasta `e2e/`. Ao final, publica o relatório HTML do Playwright como artifact quando disponível.
-
 ## Documentações
 
 - [README da API](api/README.md)
