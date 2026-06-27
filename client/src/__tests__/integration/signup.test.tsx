@@ -96,7 +96,7 @@ describe('Tela de Cadastro — fluxo de integração', () => {
    * "E-mail já cadastrado"
    *
    * O que acontece atualmente:
-   * A API retorna "E-mail já está em uso"
+   * A API retorna "E-mail já cadastrado"
    * e a tela exibe exatamente essa mensagem.
    *
    * Este teste foi criado para documentar o problema.
@@ -109,7 +109,7 @@ describe('Tela de Cadastro — fluxo de integração', () => {
       undefined,
       {
         data: {
-          message: 'E-mail já está em uso',
+          message: 'E-mail já cadastrado',
         },
         status: 409,
         statusText: 'Conflict',
