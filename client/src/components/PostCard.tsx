@@ -1,6 +1,5 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Post } from "@/service/types";
 
 interface PostCardProps {
@@ -16,17 +15,31 @@ export default function PostCard({
 }: PostCardProps) {
   const [liked, setLiked] = useState(post.liked);
   const [isLoading, setIsLoading] = useState(false);
+  const [reactions, setReactions] = useState<{ likes: number; dislikes: number } | null>(null);
+
+  useEffect(() => {
+    async function fetchReactions() {
+      try {
+        const response = await fetch(`https://dummyjson.com/posts/${post.id}`);
+        const data = await response.json();
+        if (data.reactions) {
+          setReactions(data.reactions);
+        }
+      } catch {
+        // silently fail
+      }
+    }
+    fetchReactions();
+  }, [post.id]);
 
   async function handleLike() {
     if (!isAuthenticated) {
       alert("Você precisa estar autenticado para curtir posts!");
       return;
     }
-
     setIsLoading(true);
     const previousLiked = liked;
     setLiked(!liked);
-
     try {
       await onLike(post.id);
     } catch {
@@ -65,7 +78,6 @@ export default function PostCard({
       >
         {post.title}
       </h2>
-
       <p
         style={{
           color: "var(--foreground)",
@@ -76,6 +88,22 @@ export default function PostCard({
       >
         {post.body}
       </p>
+
+      {reactions && (
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            marginBottom: "1rem",
+            fontSize: "0.9rem",
+            color: "var(--foreground)",
+            opacity: 0.8,
+          }}
+        >
+          <span>👍 {reactions.likes} curtidas</span>
+          <span>👎 {reactions.dislikes} descurtidas</span>
+        </div>
+      )}
 
       <div
         style={{
